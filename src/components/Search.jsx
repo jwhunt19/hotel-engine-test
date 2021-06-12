@@ -4,22 +4,21 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
 
-const Search = () => {
+const Search = ({setResults}) => {
 
   const [query, setQuery] = useState('');
-  const [results, setResults] = useState()
-
-  // axios.get(`https://api.github.com/search/repositories?q=${query}`)
 
   const handleSearch = () => {
     if (query.length > 0) {
-      axios.get(`https://api.github.com/search/repositories?q=${query}`)
+      axios.get(`/api/${query}`)
         .then(({data}) => {
-          console.log(data)
+          // todo - consult on formatting
+          if (data.total_count > 0) setResults(data.items)
+          else setTimeout(function(){alert("Hello")},4000);
         })
-        .catch((err) => {
+        .catch((err => {
           console.log(err)
-        })
+        }))
     }
   }
 
@@ -27,8 +26,11 @@ const Search = () => {
     <>
       <TextField 
         onChange={e => {setQuery(e.target.value)}}
+        onKeyDown={(e) => {
+          if (e.code === 'Enter') handleSearch()
+        }}
         value={query}
-        id="outlined-basic" 
+        id="outlined-basic search" 
         label="Search" 
         variant="outlined" 
       />
