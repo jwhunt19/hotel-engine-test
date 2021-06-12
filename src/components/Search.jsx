@@ -1,26 +1,48 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
+import { 
+  TextField, 
+  Button, 
+  Snackbar, 
+  FormControl, 
+  FormLabel, 
+  RadioGroup, 
+  FormControlLabel,
+  Radio } from '@material-ui/core'
+import Alert from '@material-ui/lab/Alert';
 
 
 const Search = ({setResults}) => {
 
   const [query, setQuery] = useState('');
+  const [sort, setSort] = useState('default')
+  const [noResultsOpen, setNoResultsOpen] = useState(false);
+  const [emptySearchOpen, setEmptySearchOpen] = useState(false)
+
 
   const handleSearch = () => {
     if (query.length > 0) {
-      axios.get(`/api/${query}`)
+      axios.get(`/api/${query}/${sort}`)
         .then(({data}) => {
-          // todo - consult on formatting
-          if (data.total_count > 0) setResults(data.items)
-          else setTimeout(function(){alert("Hello")},4000);
+          if (data.total_count > 0) {
+            setResults(data.items)
+          }
+          else {
+            setNoResultsOpen(true)
+          };
         })
         .catch((err => {
           console.log(err)
         }))
+    } else {
+      setEmptySearchOpen(true)
     }
   }
+
+  const handleCloseAll = () => {
+    setNoResultsOpen(false);
+    setEmptySearchOpen(false);
+  };
 
   return (
     <>
@@ -34,7 +56,28 @@ const Search = ({setResults}) => {
         label="Search" 
         variant="outlined" 
       />
+
       <Button onClick={handleSearch} variant="contained" color="primary">Go</Button>
+
+      <Snackbar open={noResultsOpen} autoHideDuration={5000} onClose={handleCloseAll}>
+        <Alert severity="error" onClose={handleCloseAll}>
+          No results found
+        </Alert>
+      </Snackbar>
+
+      <Snackbar open={emptySearchOpen} autoHideDuration={5000} onClose={handleCloseAll}>
+        <Alert severity="warning" onClose={handleCloseAll}>
+          Please enter text before searching
+        </Alert>
+      </Snackbar>
+
+      <FormControl component="fieldset">
+        <FormLabel component="legend">Sort by:</FormLabel>
+        <RadioGroup aria-label="sortBy" name="sortBy" value={sort} onChange={(e) => setSort(e.target.value)}>
+          <FormControlLabel value="default" control={<Radio />} label="Best Match" />
+          <FormControlLabel value="stars" control={<Radio />} label="Stars" />
+        </RadioGroup>
+      </FormControl>
     </>
   )
 }
