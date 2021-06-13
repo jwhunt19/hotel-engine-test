@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { 
   TextField, 
@@ -15,9 +15,13 @@ import Alert from '@material-ui/lab/Alert';
 const Search = ({setResults}) => {
 
   const [query, setQuery] = useState('');
-  const [sort, setSort] = useState('default')
+  const [sort, setSort] = useState('default');
   const [noResultsOpen, setNoResultsOpen] = useState(false);
-  const [emptySearchOpen, setEmptySearchOpen] = useState(false)
+  const [emptySearchOpen, setEmptySearchOpen] = useState(false);
+
+  useEffect(() => {
+    if (query.length > 0) handleSearch()
+  }, [sort])
 
 
   const handleSearch = () => {
@@ -37,6 +41,10 @@ const Search = ({setResults}) => {
     } else {
       setEmptySearchOpen(true)
     }
+  }
+
+  const handleSort = (e) => {
+    setSort(e.target.value)
   }
 
   const handleCloseAll = () => {
@@ -73,7 +81,7 @@ const Search = ({setResults}) => {
 
       <FormControl component="fieldset">
         <FormLabel component="legend">Sort by:</FormLabel>
-        <RadioGroup aria-label="sortBy" name="sortBy" value={sort} onChange={(e) => setSort(e.target.value)}>
+        <RadioGroup aria-label="sortBy" name="sortBy" value={sort} onChange={handleSort}>
           <FormControlLabel value="default" control={<Radio />} label="Best Match" />
           <FormControlLabel value="stars" control={<Radio />} label="Stars" />
         </RadioGroup>
