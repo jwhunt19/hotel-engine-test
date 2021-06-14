@@ -1,51 +1,49 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import axios from 'axios';
-import { 
-  TextField, 
-  Button, 
-  Snackbar, 
-  FormControl, 
-  FormLabel, 
-  RadioGroup, 
+import {
+  TextField,
+  Button,
+  Snackbar,
+  FormControl,
+  FormLabel,
+  RadioGroup,
   FormControlLabel,
-  Radio } from '@material-ui/core'
+  Radio,
+} from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 
-
-const Search = ({setResults}) => {
-
+const Search = ({ setResults }) => {
   const [query, setQuery] = useState('');
   const [sort, setSort] = useState('default');
   const [noResultsOpen, setNoResultsOpen] = useState(false);
   const [emptySearchOpen, setEmptySearchOpen] = useState(false);
 
-  useEffect(() => {
-    if (query.length > 0) handleSearch()
-  }, [sort])
-
-
   const handleSearch = () => {
     if (query.length > 0) {
       axios.get(`/api/${query}/${sort}`)
-        .then(({data}) => {
+        .then(({ data }) => {
           if (data.total_count > 0) {
-            setResults(data.items)
+            setResults(data.items);
+          } else {
+            setNoResultsOpen(true);
           }
-          else {
-            setNoResultsOpen(true)
-          };
         })
-        .catch((err => {
-          console.log(err)
-        }))
+        .catch(((err) => {
+          console.log(err);
+        }));
     } else {
-      setEmptySearchOpen(true)
+      setEmptySearchOpen(true);
     }
-  }
+  };
+
+  useEffect(() => {
+    if (query.length > 0) handleSearch();
+  }, [sort]);
 
   const handleSort = (e) => {
-    setSort(e.target.value)
-  }
+    setSort(e.target.value);
+  };
 
   const handleCloseAll = () => {
     setNoResultsOpen(false);
@@ -54,15 +52,15 @@ const Search = ({setResults}) => {
 
   return (
     <>
-      <TextField 
-        onChange={e => {setQuery(e.target.value)}}
+      <TextField
+        onChange={(e) => { setQuery(e.target.value); }}
         onKeyDown={(e) => {
-          if (e.code === 'Enter') handleSearch()
+          if (e.code === 'Enter') handleSearch();
         }}
         value={query}
-        id="outlined-basic search" 
-        label="Search" 
-        variant="outlined" 
+        id="outlined-basic search"
+        label="Search"
+        variant="outlined"
       />
 
       <Button onClick={handleSearch} variant="contained" color="primary">Go</Button>
@@ -87,7 +85,11 @@ const Search = ({setResults}) => {
         </RadioGroup>
       </FormControl>
     </>
-  )
-}
+  );
+};
+
+Search.propTypes = {
+  setResults: PropTypes.func.isRequired,
+};
 
 export default Search;
