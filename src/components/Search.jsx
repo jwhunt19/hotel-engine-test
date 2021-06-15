@@ -44,7 +44,7 @@ const Search = ({ setResults, sort }) => {
         direction="row"
         alignContent="center"
         alignItems="center"
-        spacing="2"
+        spacing={2}
       >
         <Grid container>
           <TextField
