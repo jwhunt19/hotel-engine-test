@@ -1,21 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import Grid from '@material-ui/core/Grid';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import {
-  TextField,
-  Button,
-  Snackbar,
-  FormControl,
-  FormLabel,
-  RadioGroup,
-  FormControlLabel,
-  Radio,
-} from '@material-ui/core';
+import { TextField, Button, Snackbar } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 
-const Search = ({ setResults }) => {
+const Search = ({ setResults, sort }) => {
   const [query, setQuery] = useState('');
-  const [sort, setSort] = useState('default');
   const [noResultsOpen, setNoResultsOpen] = useState(false);
   const [emptySearchOpen, setEmptySearchOpen] = useState(false);
 
@@ -41,10 +32,6 @@ const Search = ({ setResults }) => {
     if (query.length > 0) handleSearch();
   }, [sort]);
 
-  const handleSort = (e) => {
-    setSort(e.target.value);
-  };
-
   const handleCloseAll = () => {
     setNoResultsOpen(false);
     setEmptySearchOpen(false);
@@ -52,18 +39,35 @@ const Search = ({ setResults }) => {
 
   return (
     <>
-      <TextField
-        onChange={(e) => { setQuery(e.target.value); }}
-        onKeyDown={(e) => {
-          if (e.code === 'Enter') handleSearch();
-        }}
-        value={query}
-        id="outlined-basic search"
-        label="Search"
-        variant="outlined"
-      />
+      <Grid
+        container
+        direction="row"
+        alignContent="center"
+        alignItems="center"
+        spacing="2"
+      >
+        <Grid container>
+          <TextField
+            onChange={(e) => { setQuery(e.target.value); }}
+            onKeyDown={(e) => {
+              if (e.code === 'Enter') handleSearch();
+            }}
+            value={query}
+            id="outlined-basic search"
+            label="Search"
+            variant="outlined"
+          />
+          <Button
+            onClick={handleSearch}
+            variant="contained"
+            color="primary"
+            style={{ marginLeft: '5px' }}
+          >
+            Go
+          </Button>
+        </Grid>
 
-      <Button onClick={handleSearch} variant="contained" color="primary">Go</Button>
+      </Grid>
 
       <Snackbar open={noResultsOpen} autoHideDuration={5000} onClose={handleCloseAll}>
         <Alert severity="error" onClose={handleCloseAll}>
@@ -76,20 +80,13 @@ const Search = ({ setResults }) => {
           Please enter text before searching
         </Alert>
       </Snackbar>
-
-      <FormControl component="fieldset">
-        <FormLabel component="legend">Sort by:</FormLabel>
-        <RadioGroup aria-label="sortBy" name="sortBy" value={sort} onChange={handleSort}>
-          <FormControlLabel value="default" control={<Radio />} label="Best Match" />
-          <FormControlLabel value="stars" control={<Radio />} label="Stars" />
-        </RadioGroup>
-      </FormControl>
     </>
   );
 };
 
 Search.propTypes = {
   setResults: PropTypes.func.isRequired,
+  sort: PropTypes.string.isRequired,
 };
 
 export default Search;

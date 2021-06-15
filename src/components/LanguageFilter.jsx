@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TextField, Button } from '@material-ui/core';
+import { Grid, TextField, Button } from '@material-ui/core';
 import PropTypes from 'prop-types';
 
 const LanguageFilter = ({ setFilter }) => {
@@ -10,7 +10,7 @@ const LanguageFilter = ({ setFilter }) => {
   };
 
   return (
-    <>
+    <Grid noWrap>
       <TextField
         onChange={(e) => { setFilterLang(e.target.value); }}
         onKeyDown={(e) => {
@@ -19,9 +19,17 @@ const LanguageFilter = ({ setFilter }) => {
         id="outlined-basic"
         label="Language Filter"
         variant="outlined"
+        size="small"
       />
-      <Button onClick={handleFilter} variant="contained" color="primary">Go</Button>
-    </>
+      <Button
+        onClick={handleFilter}
+        variant="contained"
+        color="primary"
+        style={{ marginLeft: '5px' }}
+      >
+        Go
+      </Button>
+    </Grid>
   );
 };
 

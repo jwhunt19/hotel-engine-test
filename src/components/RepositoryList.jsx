@@ -1,17 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import List from '@material-ui/core/List';
 import Repository from './Repository';
 
 const RepositoryList = ({ results, filter }) => {
   if (filter.length === 0) {
     return (
-      <ul>
+      <List>
         {
-          results.map((repo) => (
-            <Repository repo={repo} key={`${repo.owner.id}${repo.id}`} />
-          ))
-        }
-      </ul>
+            results.map((repo) => (
+              <Repository repo={repo} key={`${repo.owner.id}${repo.id}`} />
+            ))
+          }
+      </List>
     );
   }
   const filtered = [];
@@ -25,18 +26,18 @@ const RepositoryList = ({ results, filter }) => {
   });
 
   return (
-    <ul>
+    <List>
       {
           filtered.map((repo) => (
             <Repository repo={repo} key={`${repo.owner.id}${repo.id}`} />
           ))
         }
-    </ul>
+    </List>
   );
 };
 
 RepositoryList.propTypes = {
-  results: PropTypes.objectOf(PropTypes.object).isRequired,
+  results: PropTypes.arrayOf(PropTypes.object).isRequired,
   filter: PropTypes.string.isRequired,
 };
 
