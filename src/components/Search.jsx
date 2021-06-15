@@ -21,7 +21,7 @@ const Search = ({ setResults, sort }) => {
           }
         })
         .catch(((err) => {
-          console.log(err);
+          console.error(err);
         }));
     } else {
       setEmptySearchOpen(true);
