@@ -10,7 +10,7 @@ const LanguageFilter = ({ setFilter }) => {
   };
 
   return (
-    <Grid noWrap>
+    <Grid>
       <TextField
         onChange={(e) => { setFilterLang(e.target.value); }}
         onKeyDown={(e) => {
