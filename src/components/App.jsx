@@ -11,6 +11,7 @@ import {
   Route,
   Switch,
 } from 'react-router-dom';
+import { makeStyles } from '@material-ui/core/styles';
 import Search from './Search';
 import LanguageFilter from './LanguageFilter';
 import RepositoryList from './RepositoryList';
@@ -20,10 +21,24 @@ import Details from './Details';
 let theme = createMuiTheme();
 theme = responsiveFontSizes(theme);
 
+const useStyles = makeStyles(() => ({
+  app: {
+    backgroundColor: '#FFFFFF',
+    maxWidth: '90%',
+    margin: 'auto',
+    [theme.breakpoints.up('md')]: {
+      maxWidth: '870px',
+      filter: 'drop-shadow(0 0 0.35rem black)',
+    },
+  },
+}));
+
 const App = () => {
   const [results, setResults] = useState([]);
   const [filter, setFilter] = useState('');
   const [sort, setSort] = useState('default');
+
+  const classes = useStyles();
 
   return (
     <MuiThemeProvider theme={theme}>
@@ -39,6 +54,7 @@ const App = () => {
               alignContent="center"
               alignItems="center"
               spacing={3}
+              className={classes.app}
             >
               <Grid item>
                 <Typography align="center" variant="h2">GitHub Repo Search</Typography>
