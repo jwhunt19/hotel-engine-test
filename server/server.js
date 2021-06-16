@@ -20,4 +20,8 @@ app.get('/api/:query/:sort', (req, res) => {
     .catch((err) => res.send(err));
 });
 
+app.get('/details', (req, res) => {
+  res.redirect('/');
+});
+
 module.exports = app;
