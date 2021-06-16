@@ -8,11 +8,18 @@ import {
   Avatar,
   Divider,
 } from '@material-ui/core';
-// import Link from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const Repository = ({ repo }) => (
   <>
-    <ListItem>
+    <ListItem
+      button
+      component={Link}
+      to={{
+        pathname: '/details',
+        state: { repo },
+      }}
+    >
       <ListItemAvatar>
         <Avatar alt={`${repo.owner.login} avatar`} src={repo.owner.avatar_url} />
       </ListItemAvatar>
@@ -30,7 +37,7 @@ const Repository = ({ repo }) => (
             </Typography>
             {repo.owner.login}
           </>
-            )}
+        )}
       />
     </ListItem>
     <Divider variant="inset" component="li" />
