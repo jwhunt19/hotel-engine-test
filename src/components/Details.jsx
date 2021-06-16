@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Button,
   Grid,
@@ -25,6 +25,12 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     maxWidth: '900px',
     margin: 'auto',
+    padding: '20px 50px 200px 50px',
+    backgroundColor: '#FFFFFF',
+    [theme.breakpoints.up('md')]: {
+      maxWidth: '870px',
+      filter: 'drop-shadow(0 0 0.35rem black)',
+    },
   },
   gridItem: {
     padding: theme.spacing(2),
@@ -49,29 +55,33 @@ const Details = () => {
     window.history.back();
   };
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  });
+
   return (
     <>
-      <Grid container alignItems="center" spacing={3}>
-        <Grid item>
-          <Button variant="outlined" color="primary" onClick={goBack}>
-            <ArrowBack />
-          </Button>
-        </Grid>
-        <Grid item>
-          <Typography>
-            <Link rel="noopener noreferrer" href={repo.owner.html_url} target="_blank">
-              {repo.owner.login}
-            </Link>
-            {' / '}
-            <Link rel="noopener noreferrer" href={repo.html_url} target="_blank">
-              {repo.name}
-            </Link>
-          </Typography>
-        </Grid>
-      </Grid>
-
       <div className={classes.root}>
-        <Grid container spacing={5}>
+        <Grid container alignItems="center" spacing={3}>
+          <Grid item>
+            <Button variant="outlined" color="primary" onClick={goBack}>
+              <ArrowBack />
+            </Button>
+          </Grid>
+          <Grid item>
+            <Typography>
+              <Link rel="noopener noreferrer" href={repo.owner.html_url} target="_blank">
+                {repo.owner.login}
+              </Link>
+              {' / '}
+              <Link rel="noopener noreferrer" href={repo.html_url} target="_blank">
+                {repo.name}
+              </Link>
+            </Typography>
+          </Grid>
+        </Grid>
+
+        <Grid container spacing={5} style={{ marginTop: '5vh' }}>
           <Grid item xs={12}>
             <Typography variant="h2" align="center">{repo.name}</Typography>
             <Grid item className={classes.gridInfo}>
