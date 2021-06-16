@@ -7,14 +7,16 @@ import {
   Paper,
   Avatar,
 } from '@material-ui/core';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import CodeIcon from '@material-ui/icons/Code';
-import DescriptionIcon from '@material-ui/icons/Description';
-import StarOutlineIcon from '@material-ui/icons/StarOutline';
-import CallSplitIcon from '@material-ui/icons/CallSplit';
-import StorageIcon from '@material-ui/icons/Storage';
-import VisibilityIcon from '@material-ui/icons/Visibility';
-import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import {
+  ArrowBack,
+  Code,
+  Description,
+  StarOutline,
+  CallSplit,
+  Storage,
+  Visibility,
+  ArrowForward,
+} from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 import { useLocation } from 'react-router-dom';
 
@@ -52,7 +54,7 @@ const Details = () => {
       <Grid container alignItems="center" spacing={3}>
         <Grid item>
           <Button variant="outlined" color="primary" onClick={goBack}>
-            <ArrowBackIcon />
+            <ArrowBack />
           </Button>
         </Grid>
         <Grid item>
@@ -83,14 +85,14 @@ const Details = () => {
           </Grid>
 
           <Grid item xs={12} sm={6} className={`${classes.gridItem} ${classes.gridInfo}`}>
-            <CodeIcon className={classes.secondary} />
+            <Code className={classes.secondary} />
             <Typography variant="body2" className={classes.secondary}>Language:&nbsp;</Typography>
             <Typography variant="body1">{repo.language}</Typography>
           </Grid>
 
           <Grid item xs={12} sm={6} className={classes.gridItem}>
             <Grid item className={classes.gridInfo}>
-              <DescriptionIcon className={classes.secondary} />
+              <Description className={classes.secondary} />
               <Typography variant="body2" className={classes.secondary}>Description:&nbsp;</Typography>
             </Grid>
             <Typography variant="body1">{repo.description}</Typography>
@@ -98,7 +100,7 @@ const Details = () => {
 
           <Grid item xs={6} sm={3}>
             <Paper className={`${classes.gridItem} ${classes.gridInfo}`}>
-              <StarOutlineIcon className={classes.secondary} />
+              <StarOutline className={classes.secondary} />
               <Typography variant="body2" className={classes.secondary}>Stars:&nbsp;</Typography>
               <Typography variant="body1">{repo.stargazers_count}</Typography>
             </Paper>
@@ -106,7 +108,7 @@ const Details = () => {
 
           <Grid item xs={6} sm={3}>
             <Paper className={`${classes.gridItem} ${classes.gridInfo}`}>
-              <CallSplitIcon className={classes.secondary} />
+              <CallSplit className={classes.secondary} />
               <Typography variant="body2" className={classes.secondary}>Forks:&nbsp;</Typography>
               <Typography variant="body1">{repo.forks}</Typography>
             </Paper>
@@ -114,7 +116,7 @@ const Details = () => {
 
           <Grid item xs={6} sm={3}>
             <Paper className={`${classes.gridItem} ${classes.gridInfo}`}>
-              <StorageIcon className={classes.secondary} />
+              <Storage className={classes.secondary} />
               <Typography variant="body2" className={classes.secondary}>Size:&nbsp;</Typography>
               <Typography variant="body1">
                 {repo.size}
@@ -126,7 +128,7 @@ const Details = () => {
 
           <Grid item xs={6} sm={3}>
             <Paper className={`${classes.gridItem} ${classes.gridInfo}`}>
-              <VisibilityIcon className={classes.secondary} />
+              <Visibility className={classes.secondary} />
               <Typography variant="body2" className={classes.secondary}>Watchers:&nbsp;</Typography>
               <Typography variant="body1">{repo.watchers}</Typography>
             </Paper>
@@ -135,7 +137,7 @@ const Details = () => {
           <Grid item xs={12} align="center">
             <Button rel="noopener noreferrer" href={repo.html_url} target="_blank" variant="outlined" className={classes.secondary}>
               Visit repository
-              <ArrowForwardIcon />
+              <ArrowForward />
             </Button>
           </Grid>
         </Grid>
