@@ -1,21 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import Grid from '@material-ui/core/Grid';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import Grid from '@material-ui/core/Grid';
 import { TextField, Button, Snackbar } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
+import Spinner from 'react-bootstrap/Spinner';
 
 const Search = ({ setResults, sort }) => {
   const [query, setQuery] = useState('');
+  const [loading, setLoading] = useState(false);
   const [noResultsOpen, setNoResultsOpen] = useState(false);
   const [emptySearchOpen, setEmptySearchOpen] = useState(false);
 
   const handleSearch = () => {
     if (query.length > 0) {
+      setLoading(true);
       axios.get(`/api/${query}/${sort}`)
         .then(({ data }) => {
           if (data.total_count > 0) {
             setResults(data.items);
+            setLoading(false);
           } else {
             setNoResultsOpen(true);
           }
@@ -39,35 +43,40 @@ const Search = ({ setResults, sort }) => {
 
   return (
     <>
-      <Grid
-        container
-        direction="row"
-        alignContent="center"
-        alignItems="center"
-        spacing={2}
-      >
-        <Grid container>
-          <TextField
-            onChange={(e) => { setQuery(e.target.value); }}
-            onKeyDown={(e) => {
-              if (e.code === 'Enter') handleSearch();
-            }}
-            value={query}
-            id="outlined-basic search"
-            label="Search"
-            variant="outlined"
-          />
-          <Button
-            onClick={handleSearch}
-            variant="contained"
-            color="primary"
-            style={{ marginLeft: '5px' }}
-          >
-            Go
-          </Button>
-        </Grid>
-
-      </Grid>
+      {
+        loading
+          ? <Spinner animation="border" />
+          : (
+            <Grid
+              container
+              direction="row"
+              alignContent="center"
+              alignItems="center"
+              spacing={2}
+            >
+              <Grid container>
+                <TextField
+                  onChange={(e) => { setQuery(e.target.value); }}
+                  onKeyDown={(e) => {
+                    if (e.code === 'Enter') handleSearch();
+                  }}
+                  value={query}
+                  id="outlined-basic search"
+                  label="Search"
+                  variant="outlined"
+                />
+                <Button
+                  onClick={handleSearch}
+                  variant="contained"
+                  color="primary"
+                  style={{ marginLeft: '5px' }}
+                >
+                  Go
+                </Button>
+              </Grid>
+            </Grid>
+          )
+      }
 
       <Snackbar open={noResultsOpen} autoHideDuration={5000} onClose={handleCloseAll}>
         <Alert severity="error" onClose={handleCloseAll}>
