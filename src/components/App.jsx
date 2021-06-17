@@ -57,7 +57,7 @@ const App = () => {
               className={classes.app}
             >
               <Grid item>
-                <Typography align="center" variant="h2">GitHub Repo Search</Typography>
+                <Typography align="center" variant="h2">GitHub Repo Finder</Typography>
               </Grid>
               <Grid item>
                 <Search setResults={setResults} sort={sort} />
@@ -65,7 +65,7 @@ const App = () => {
               <Grid item>
                 <Grid container alignItems="center" justify="center">
                   <Sort sort={sort} setSort={setSort} />
-                  <LanguageFilter setFilter={setFilter} />
+                  <LanguageFilter filter={filter} setFilter={setFilter} results={results} />
                 </Grid>
               </Grid>
               <Grid item>

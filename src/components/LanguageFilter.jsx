@@ -1,40 +1,43 @@
-import React, { useState } from 'react';
-import { Grid, TextField, Button } from '@material-ui/core';
+import React from 'react';
+import {
+  Grid,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+} from '@material-ui/core';
 import PropTypes from 'prop-types';
 
-const LanguageFilter = ({ setFilter }) => {
-  const [filterLang, setFilterLang] = useState('');
-
-  const handleFilter = () => {
-    setFilter(filterLang);
-  };
+const LanguageFilter = ({ filter, setFilter, results }) => {
+  const languages = [...new Set(results.filter((r) => (!!r.language)).map((r) => r.language))];
 
   return (
     <Grid>
-      <TextField
-        onChange={(e) => { setFilterLang(e.target.value); }}
-        onKeyDown={(e) => {
-          if (e.code === 'Enter') handleFilter();
-        }}
-        id="outlined-basic"
-        label="Language Filter"
-        variant="outlined"
-        size="small"
-      />
-      <Button
-        onClick={handleFilter}
-        variant="contained"
-        color="primary"
-        style={{ marginLeft: '5px' }}
-      >
-        Go
-      </Button>
+      <FormControl variant="outlined" style={{ width: '150px' }}>
+        <InputLabel>Language filter</InputLabel>
+        <Select
+          value={filter}
+          onChange={(e) => { setFilter(e.target.value); }}
+          label="Language filter"
+        >
+          <MenuItem value="">
+            <em>None</em>
+          </MenuItem>
+          {
+            languages.map((language) => (
+              <MenuItem value={language} key={language}>{language}</MenuItem>
+            ))
+          }
+        </Select>
+      </FormControl>
     </Grid>
   );
 };
 
 LanguageFilter.propTypes = {
   setFilter: PropTypes.func.isRequired,
+  results: PropTypes.arrayOf(PropTypes.object).isRequired,
+  filter: PropTypes.string.isRequired,
 };
 
 export default LanguageFilter;
