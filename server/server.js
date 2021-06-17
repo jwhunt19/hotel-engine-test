@@ -1,14 +1,21 @@
 const express = require('express');
 const path = require('path');
 const axios = require('axios');
+const rateLimit = require('express-rate-limit');
 
 const app = express();
+
+const limiter = rateLimit({
+  windowMs: 10 * 1000,
+  max: 3,
+});
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '..', 'dist')));
 
+app.use('/api/', limiter);
+
 app.get('/api/:query/:sort', (req, res) => {
-  // todo - limit requests to not break github api
   axios.get('https://api.github.com/search/repositories', {
     params: {
       q: req.params.query,
@@ -17,7 +24,7 @@ app.get('/api/:query/:sort', (req, res) => {
     },
   })
     .then(({ data }) => res.status(200).send(data))
-    .catch((err) => res.send(err));
+    .catch((err) => res.status(err.response.status).send(err));
 });
 
 app.get('/details', (req, res) => {
