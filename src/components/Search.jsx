@@ -2,15 +2,14 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import Grid from '@material-ui/core/Grid';
-import { TextField, Button, Snackbar } from '@material-ui/core';
-import Alert from '@material-ui/lab/Alert';
+import { TextField, Button } from '@material-ui/core';
 import Spinner from 'react-bootstrap/Spinner';
 
-const Search = ({ setResults, sort }) => {
+const Search = ({
+  setResults, sort, setNoResultsOpen, setEmptySearchOpen, setTooManyRequests, setUnknownError,
+}) => {
   const [query, setQuery] = useState('');
   const [loading, setLoading] = useState(false);
-  const [noResultsOpen, setNoResultsOpen] = useState(false);
-  const [emptySearchOpen, setEmptySearchOpen] = useState(false);
 
   const handleSearch = () => {
     if (query.length > 0) {
@@ -27,6 +26,12 @@ const Search = ({ setResults, sort }) => {
         })
         .catch(((err) => {
           console.error(err);
+          if (err.response.status === 403 || err.response.status === 429) {
+            setTooManyRequests(true);
+          } else {
+            setUnknownError(true);
+          }
+          setLoading(false);
         }));
     } else {
       setEmptySearchOpen(true);
@@ -36,11 +41,6 @@ const Search = ({ setResults, sort }) => {
   useEffect(() => {
     if (query.length > 0) handleSearch();
   }, [sort]);
-
-  const handleCloseAll = () => {
-    setNoResultsOpen(false);
-    setEmptySearchOpen(false);
-  };
 
   return (
     <>
@@ -78,18 +78,6 @@ const Search = ({ setResults, sort }) => {
             </Grid>
           )
       }
-
-      <Snackbar open={noResultsOpen} autoHideDuration={5000} onClose={handleCloseAll}>
-        <Alert severity="error" onClose={handleCloseAll}>
-          No results found
-        </Alert>
-      </Snackbar>
-
-      <Snackbar open={emptySearchOpen} autoHideDuration={5000} onClose={handleCloseAll}>
-        <Alert severity="warning" onClose={handleCloseAll}>
-          Please enter text before searching
-        </Alert>
-      </Snackbar>
     </>
   );
 };
@@ -97,6 +85,10 @@ const Search = ({ setResults, sort }) => {
 Search.propTypes = {
   setResults: PropTypes.func.isRequired,
   sort: PropTypes.string.isRequired,
+  setNoResultsOpen: PropTypes.func.isRequired,
+  setEmptySearchOpen: PropTypes.func.isRequired,
+  setTooManyRequests: PropTypes.func.isRequired,
+  setUnknownError: PropTypes.func.isRequired,
 };
 
 export default Search;
