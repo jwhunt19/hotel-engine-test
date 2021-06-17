@@ -22,6 +22,7 @@ const Search = ({ setResults, sort }) => {
             setLoading(false);
           } else {
             setNoResultsOpen(true);
+            setLoading(false);
           }
         })
         .catch(((err) => {
