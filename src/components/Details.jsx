@@ -25,6 +25,7 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     maxWidth: '900px',
     margin: 'auto',
+    marginTop: '85px',
     padding: '20px 50px 200px 50px',
     backgroundColor: '#FFFFFF',
     [theme.breakpoints.up('md')]: {

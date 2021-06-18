@@ -30,9 +30,12 @@ const useStyles = makeStyles(() => ({
     margin: 'auto',
     marginTop: '85px',
     [theme.breakpoints.up('md')]: {
-      maxWidth: '870px',
+      maxWidth: '70vw',
       filter: 'drop-shadow(0 0 0.35rem black)',
     },
+  },
+  title: {
+    padding: '25px',
   },
 }));
 
